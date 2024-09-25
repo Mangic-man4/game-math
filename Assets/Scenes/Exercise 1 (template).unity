@@ -261,6 +261,55 @@ Light:
   m_CorrespondingSourceObject: {fileID: 3888057769286396419, guid: 19b149fee4b8fe142aa0a5a00d0fd227, type: 3}
   m_PrefabInstance: {fileID: 9183527280945142321}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &999908353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 999908355}
+  - component: {fileID: 999908354}
+  m_Layer: 0
+  m_Name: OffsetCalc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &999908354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999908353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416834f3ff8cfce479d0d688ab42d159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  craneTransform: {fileID: 8658184023392300794}
+  nearPointObject: {fileID: 601031390}
+  farPointObject: {fileID: 363527139}
+  nearPointOffset: {x: 0, y: 0, z: 0}
+  farPointOffset: {x: 0, y: 0, z: 0}
+--- !u!4 &999908355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999908353}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -16, y: 10, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1129986451 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3316947968284832955, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
@@ -805,6 +854,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1064534356098386809, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1064534356098386809, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -969,6 +1022,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6101301330056472460, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101301330056472460, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -991,6 +1048,10 @@ PrefabInstance:
     - target: {fileID: 6101301330056472460, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CableController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101301330056472460, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6101301330056472460, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -1074,8 +1135,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8658184023392465618}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000008146034, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -22, y: 26, z: 0}
+  m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -22, y: 26, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1544,6 +1605,7 @@ MonoBehaviour:
   cableSlider: {fileID: 499083585}
   minCableLength: 0.1
   maxCableLength: 2
+  movementScaleFactor: 1
 --- !u!33 &8658184023395725022
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1565,9 +1627,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   craneTransform: {fileID: 8658184023392300794}
-  trolleyNearLimit: {fileID: 601031390}
-  trolleyFarLimit: {fileID: 363527139}
-  trolleyPosition: 0.5
+  nearPointOffset: {x: -10, y: 39.5, z: 0}
+  farPointOffset: {x: -22, y: 39.5, z: 0}
+  trolleyPosition: 1
   trolleySlider: {fileID: 1646295372}
 --- !u!120 &8658184023395725024
 LineRenderer:
@@ -1804,6 +1866,7 @@ SceneRoots:
   - {fileID: 8658184023392300798}
   - {fileID: 8658184023392300786}
   - {fileID: 6023892515792536319}
+  - {fileID: 999908355}
   - {fileID: 1462821906}
   - {fileID: 8685051053018706934}
   - {fileID: 6208831963816882321}
