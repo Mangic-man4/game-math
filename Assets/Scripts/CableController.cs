@@ -6,14 +6,17 @@ public class CableController : MonoBehaviour
     public Transform hook;              // Reference to the hook
     public Transform trolley;           // Reference to the trolley
     public Transform concrete;          // Reference to the concrete attachment point
-    public Transform cableModel;        // Reference to the cable model (assuming it stretches vertically)
+    public Transform cableModel;        // Reference to the cable model (assuming it stretches vertically
+    public Transform cable;
 
     public Slider cableSlider;          // Reference to the UI Slider for cable length
     public float minCableLength = 0.1f;  // Minimum length of the cable
-    public float maxCableLength = 2f;    // Maximum length of the cable
-    public float movementScaleFactor = 5f;  // Scale factor to amplify hook movement
+    public float maxCableLength = 2f;   // Maximum length of the cable
+    public float movementScaleFactor = 1f;  // Scale factor to amplify hook movement (if needed)
 
     private float currentCableLength;   // Current length of the cable
+    private float logTimer = 0f;        // Timer for logging
+    public float logInterval = 0.5f;     // Log interval in seconds
 
     void Start()
     {
@@ -25,7 +28,7 @@ public class CableController : MonoBehaviour
             cableSlider.onValueChanged.AddListener(OnCableSliderChanged);
 
             // Initialize cable length based on current positions
-            float initialCableLength = Vector3.Distance(hook.position, trolley.position);
+            float initialCableLength = Mathf.Clamp(Vector3.Distance(hook.position, trolley.position), minCableLength, maxCableLength);
             float normalizedLength = Mathf.InverseLerp(minCableLength, maxCableLength, initialCableLength);
             cableSlider.value = normalizedLength;
         }
@@ -44,24 +47,36 @@ public class CableController : MonoBehaviour
             AttachHookToConcrete();
         }
     }
-
     private void UpdateCableAndHook()
     {
-        if (hook != null && trolley != null)
+        if (hook != null && trolley != null && cable != null)
         {
-            // Calculate the cable length based on the slider value (mapping it from min to max)
+            // Calculate the cable length based on the slider value
             currentCableLength = Mathf.Lerp(minCableLength, maxCableLength, cableSlider.value);
 
-            // Move the hook vertically based on the cable length
-            Vector3 hookPosition = trolley.position - new Vector3(0, currentCableLength, 0);
+            // Calculate the vertical position for the hook
+            float hookYPosition = Mathf.Lerp(40f, 12.5f, (currentCableLength - minCableLength) / (maxCableLength - minCableLength));
 
-            // Apply the new position to the hook
-            hook.position = hookPosition;
+            // Update the hook's position
+            hook.position = new Vector3(trolley.position.x, hookYPosition, trolley.position.z);
 
-            // Update the cable's visual length
-            UpdateCableVisual();
+            // Update the cable's position
+            cable.position = new Vector3(trolley.position.x, trolley.position.y, trolley.position.z); // Match the trolley's position
+
+            // Update the cable's scale
+            cable.localScale = new Vector3(cable.localScale.x, currentCableLength, cable.localScale.z); // Maintain original X and Z scales
+
+            /* Log debug information
+            logTimer += Time.deltaTime; // Increment timer by the time since the last frame
+            if (logTimer >= logInterval) // Check if the timer exceeds the log interval
+            {
+                Debug.Log($"Trolley Position: {trolley.position}, Current Cable Length: {currentCableLength}, Hook Position: {hook.position}, Cable Position: {cable.position}, Cable Scale: {cable.localScale}");
+                logTimer = 0f; // Reset the log timer
+            }*/
         }
     }
+
+
 
     private void UpdateCableVisual()
     {
@@ -101,5 +116,4 @@ public class CableController : MonoBehaviour
         // Optionally, stop cable length adjustment if the hook is attached
     }
 }
-
 

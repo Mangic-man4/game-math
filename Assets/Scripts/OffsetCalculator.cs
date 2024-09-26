@@ -15,8 +15,8 @@ public class OffsetCalculator : MonoBehaviour
         nearPointOffset = craneTransform.InverseTransformPoint(nearPointObject.position);
         farPointOffset = craneTransform.InverseTransformPoint(farPointObject.position);
 
-        Debug.Log($"Near Point Offset: {nearPointOffset}");
-        Debug.Log($"Far Point Offset: {farPointOffset}");
+//        Debug.Log($"Near Point Offset: {nearPointOffset}");
+//        Debug.Log($"Far Point Offset: {farPointOffset}");
     }
 }
 

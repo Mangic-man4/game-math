@@ -304,7 +304,7 @@ Transform:
   m_GameObject: {fileID: 999908353}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16, y: 10, z: 0}
+  m_LocalPosition: {x: -16, y: 10, z: -4.37}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -667,6 +667,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2132188415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2132188416}
+  m_Layer: 0
+  m_Name: AttachmentPoint
+  m_TagString: ConcreteAttachment
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2132188416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132188415}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -16, y: 10, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &249946217015812840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -805,9 +836,10 @@ GameObject:
   - component: {fileID: 6023892515789636319}
   - component: {fileID: 6023892515790766111}
   - component: {fileID: 6023892515792707297}
+  - component: {fileID: 6023892515792707298}
   m_Layer: 0
   m_Name: Concrete
-  m_TagString: Untagged
+  m_TagString: Concrete
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -833,6 +865,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.08
   m_Center: {x: 0, y: -0.12, z: 0}
+--- !u!114 &6023892515792707298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6023892515792707295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d99c1768280194194ba309d262c89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hook: {fileID: 8658184023392300786}
+  concreteAttachmentPoint: {fileID: 2132188416}
 --- !u!1001 &6208831963816882321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1602,10 +1648,12 @@ MonoBehaviour:
   trolley: {fileID: 8658184023392300784}
   concrete: {fileID: 6023892515792536319}
   cableModel: {fileID: 8658184023392300798}
+  cable: {fileID: 8658184023392300798}
   cableSlider: {fileID: 499083585}
   minCableLength: 0.1
   maxCableLength: 2
   movementScaleFactor: 1
+  logInterval: 0.5
 --- !u!33 &8658184023395725022
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1866,6 +1914,7 @@ SceneRoots:
   - {fileID: 8658184023392300798}
   - {fileID: 8658184023392300786}
   - {fileID: 6023892515792536319}
+  - {fileID: 2132188416}
   - {fileID: 999908355}
   - {fileID: 1462821906}
   - {fileID: 8685051053018706934}
