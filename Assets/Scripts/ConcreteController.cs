@@ -9,7 +9,7 @@ public class ConcreteController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isHookAttached && other.CompareTag("ConcreteAttachment")) // Assuming the attachment point is tagged
+        if (!isHookAttached && other.CompareTag("ConcreteAttachment")) //Remember tag on gameobject
         {
             AttachHookToConcrete();
         }
@@ -19,18 +19,11 @@ public class ConcreteController : MonoBehaviour
     {
         isHookAttached = true; // Mark the hook as attached
         hook.position = concreteAttachmentPoint.position; // Snap the hook to the concrete attachment point
-
-        // Optionally stop cable length adjustment if the hook is attached
-        // Example: GetComponent<CableController>().enabled = false; // Disable cable control if needed
     }
 
     public void ReleaseHook()
     {
         isHookAttached = false;
-
-        // Logic to release the hook, allowing it to move again.
-        // If you want to reset the position or other properties, do it here.
-        // Example: hook.position = initialHookPosition; // Reset hook position if needed
     }
 }
 

@@ -36,7 +36,7 @@ public class TrolleyController : MonoBehaviour
 
         // Update the trolley's position in world space
         transform.position = localTrolleyPosition;
-        transform.rotation = craneTransform.rotation; // Align rotation if needed
+        transform.rotation = craneTransform.rotation; 
     }
 
     public void OnTrolleySliderChanged(float value)

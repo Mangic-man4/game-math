@@ -3,8 +3,8 @@ using UnityEngine;
 public class OffsetCalculator : MonoBehaviour
 {
     public Transform craneTransform;
-    public Transform nearPointObject; // The GameObject representing the near point
-    public Transform farPointObject;  // The GameObject representing the far point
+    public Transform nearPointObject; 
+    public Transform farPointObject; 
 
     public Vector3 nearPointOffset;
     public Vector3 farPointOffset;

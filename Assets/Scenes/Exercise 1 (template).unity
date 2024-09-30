@@ -334,7 +334,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 8658184023395725017}
           m_TargetAssemblyTypeName: CraneController, Assembly-CSharp
-          m_MethodName: StartRotateCounterClockwise
+          m_MethodName: StartRotateClockwise
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -350,7 +350,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 8658184023395725017}
           m_TargetAssemblyTypeName: CraneController, Assembly-CSharp
-          m_MethodName: StopRotateCounterClockwise
+          m_MethodName: StopRotateClockwise
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -457,7 +457,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 8658184023395725017}
           m_TargetAssemblyTypeName: CraneController, Assembly-CSharp
-          m_MethodName: StartRotateClockwise
+          m_MethodName: StartRotateCounterClockwise
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -473,7 +473,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 8658184023395725017}
           m_TargetAssemblyTypeName: CraneController, Assembly-CSharp
-          m_MethodName: StopRotateClockwise
+          m_MethodName: StopRotateCounterClockwise
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1653,7 +1653,6 @@ MonoBehaviour:
   minCableLength: 0.1
   maxCableLength: 2
   movementScaleFactor: 1
-  logInterval: 0.5
 --- !u!33 &8658184023395725022
 MeshFilter:
   m_ObjectHideFlags: 0

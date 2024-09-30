@@ -15,15 +15,15 @@ public class CableController : MonoBehaviour
     public float movementScaleFactor = 1f;  // Scale factor to amplify hook movement (if needed)
 
     private float currentCableLength;   // Current length of the cable
-    private float logTimer = 0f;        // Timer for logging
-    public float logInterval = 0.5f;     // Log interval in seconds
+    //private float logTimer = 0f;        // Timer for logging
+    //public float logInterval = 0.5f;     // Log interval in seconds
 
     void Start()
     {
         if (cableSlider != null)
         {
             // Set slider limits based on cable length
-            cableSlider.minValue = 0f;  // Slider moves from 0 to 1 (normalized)
+            cableSlider.minValue = 0f;  // Slider moves from 0 to 1 
             cableSlider.maxValue = 1f;
             cableSlider.onValueChanged.AddListener(OnCableSliderChanged);
 
@@ -113,7 +113,6 @@ public class CableController : MonoBehaviour
     {
         // Snap the hook to the concrete attachment point
         hook.position = concrete.position;
-        // Optionally, stop cable length adjustment if the hook is attached
     }
 }
 
