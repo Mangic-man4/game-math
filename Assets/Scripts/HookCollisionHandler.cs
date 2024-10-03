@@ -6,6 +6,10 @@ public class HookCollisionHandler : MonoBehaviour
 
     void Start()
     {
+
+        cableController = FindObjectOfType<CableController>();
+
+
         if (cableController == null)
         {
             Debug.LogWarning("CableController reference is not assigned in HookCollisionHandler. Assign it in the Inspector.");

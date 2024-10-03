@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Concrete
   - ConcreteAttachment
+  - ClickableArea
+  - Hook
+  - Cable
+  - Trolley
+  - Crane
   layers:
   - Default
   - TransparentFX

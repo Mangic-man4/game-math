@@ -422,6 +422,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1619504616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1619504618}
+  - component: {fileID: 1619504617}
+  m_Layer: 0
+  m_Name: ConcreteClickable
+  m_TagString: ClickableArea
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1619504617
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619504616}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.6356936, y: 2.9292645, z: 11.512026}
+  m_Center: {x: 1.3849645, y: 0.9646323, z: 0.29726505}
+--- !u!4 &1619504618
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619504616}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.380747, y: 1.18, z: -0.26529703}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1646295372 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1064534356098386809, guid: 85e1ce8fbcff6f042a34bee9779e8146, type: 3}
@@ -677,7 +730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2132188416}
   m_Layer: 0
-  m_Name: AttachmentPoint
+  m_Name: ConcreteAttachmentPoint
   m_TagString: ConcreteAttachment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,7 +912,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1245,7 +1298,7 @@ GameObject:
   - component: {fileID: 8658184023395725023}
   m_Layer: 0
   m_Name: Trolley
-  m_TagString: Untagged
+  m_TagString: Trolley
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1267,7 +1320,7 @@ GameObject:
   - component: {fileID: 8658184023395725013}
   m_Layer: 0
   m_Name: Hook
-  m_TagString: Untagged
+  m_TagString: Hook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1286,7 +1339,7 @@ GameObject:
   - component: {fileID: 8658184023395725017}
   m_Layer: 0
   m_Name: Tower Crane
-  m_TagString: Untagged
+  m_TagString: Crane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1324,7 +1377,7 @@ GameObject:
   - component: {fileID: 8658184023395725021}
   m_Layer: 0
   m_Name: Cable
-  m_TagString: Untagged
+  m_TagString: Cable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1640,7 +1693,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47e4c1d4b5811d24a8a52f07456e7b1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  concrete: {fileID: 6023892515792536319}
+  trolley: {fileID: 8658184023392300784}
+  hook: {fileID: 8658184023392300786}
   rotationSpeed: 50
+  moveSpeed: 2
+  minHeight: 10
+  maxHeight: 20
+  trolleyNearLimit: 5
+  trolleyFarLimit: 15
+  waitTime: 1
 --- !u!33 &8658184023395725018
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1673,12 +1735,17 @@ MonoBehaviour:
   trolley: {fileID: 8658184023392300784}
   concrete: {fileID: 6023892515792536319}
   cableModel: {fileID: 8658184023392300798}
-  cable: {fileID: 8658184023392300798}
   cableSlider: {fileID: 499083585}
   minCableLength: 0.1
   maxCableLength: 2
-  hookMinY: 12.5
-  hookMaxY: 40
+  movementScaleFactor: 1
+  rotationSpeed: 90
+  moveSpeed: 2
+  minHeight: 10
+  maxHeight: 20
+  trolleyNearLimit: 5
+  trolleyFarLimit: 15
+  waitTime: 1
 --- !u!33 &8658184023395725022
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1939,6 +2006,7 @@ SceneRoots:
   - {fileID: 8658184023392300798}
   - {fileID: 8658184023392300786}
   - {fileID: 6023892515792536319}
+  - {fileID: 1619504618}
   - {fileID: 2132188416}
   - {fileID: 999908355}
   - {fileID: 1462821906}
