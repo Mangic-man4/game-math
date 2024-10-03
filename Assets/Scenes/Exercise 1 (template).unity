@@ -874,11 +874,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6023892515792707295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14d99c1768280194194ba309d262c89d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c70474dc79ea054eb2a25b625fe2832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hook: {fileID: 8658184023392300786}
-  concreteAttachmentPoint: {fileID: 2132188416}
 --- !u!1001 &6208831963816882321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1265,6 +1263,8 @@ GameObject:
   - component: {fileID: 8658184023394724880}
   - component: {fileID: 8658184023395725010}
   - component: {fileID: 8658184023395725011}
+  - component: {fileID: 8658184023395725012}
+  - component: {fileID: 8658184023395725013}
   m_Layer: 0
   m_Name: Hook
   m_TagString: Untagged
@@ -1591,10 +1591,35 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8658184023395725012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8658184023392465618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c70474dc79ea054eb2a25b625fe2832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8658184023395725013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8658184023392465618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e77ebe234e9e2c40a2dbacf8c9c91a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cableController: {fileID: 8658184023395725021}
 --- !u!33 &8658184023395725016
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1652,7 +1677,8 @@ MonoBehaviour:
   cableSlider: {fileID: 499083585}
   minCableLength: 0.1
   maxCableLength: 2
-  movementScaleFactor: 1
+  hookMinY: 12.5
+  hookMaxY: 40
 --- !u!33 &8658184023395725022
 MeshFilter:
   m_ObjectHideFlags: 0
