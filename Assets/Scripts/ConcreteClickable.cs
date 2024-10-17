@@ -1,8 +1,9 @@
-/*using UnityEngine;
+using UnityEngine;
 
 public class ConcreteClickable : MonoBehaviour
 {
     public CraneController craneController; // Reference to the CraneController
+    public TrolleyController trolleyController; // Reference to the TrolleyController
 
     void Start()
     {
@@ -11,6 +12,13 @@ public class ConcreteClickable : MonoBehaviour
         {
             craneController = FindObjectOfType<CraneController>();
         }
+
+        // Automatically find the TrolleyController in the scene
+        if (trolleyController == null)
+        {
+            trolleyController = FindObjectOfType<TrolleyController>();
+        }
+
     }
 
     void Update()
@@ -21,24 +29,25 @@ public class ConcreteClickable : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            // Draw a ray in the scene for debugging
-            Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 2f);
-
             if (Physics.Raycast(ray, out hit))
             {
-                // Check if the object hit is the ConcreteClickableArea object
-                if (hit.collider.CompareTag("ClickableArea")) // Use a tag for comparison
+                // Check if the object hit has the "Concrete" tag
+                if (hit.collider.CompareTag("Concrete")) // Make sure the concrete object is tagged as "Concrete"
                 {
-                    Debug.Log("Concrete clicked!"); // Check if click detected
-                    craneController.OnConcreteClicked(); // Call the crane action
+                   // Debug.Log("Concrete clicked!"); // Check if click detected
+                    Vector3 concretePosition = hit.collider.transform.position;
+                    craneController.StartRotationTowardsConcrete(concretePosition); // Call the crane action with the concrete position
+                    trolleyController.StartMoveTrolleyToConcrete(concretePosition); // Call the trolley action
                 }
                 else
                 {
-                    Debug.Log("Hit: " + hit.collider.gameObject.name); // Show which object was hit
+                    Debug.Log("Clicked on: " + hit.collider.gameObject.name); // For debugging, print what was clicked
                 }
             }
         }
     }
-}*/
+}
+
+
 
 

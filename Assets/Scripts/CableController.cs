@@ -1,9 +1,234 @@
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+
+public class CableController : MonoBehaviour
+{
+    //Old code
+    public Transform hook;              // Reference to the hook
+    public Transform trolley;           // Reference to the trolley
+    public Transform concrete;          // Reference to the concrete attachment point
+    public Transform cableModel;        // Reference to the cable model
+    public Transform cable;
+
+    public Slider cableSlider;          // Reference to the UI Slider for cable length
+    public float minCableLength = 0.1f; // Minimum length of the cable
+    public float maxCableLength = 2f;   // Maximum length of the cable
+    public float hookMinY = 12.5f;      // Minimum Y position of the hook
+    public float hookMaxY = 40f;        // Maximum Y position of the hook
+
+    private float currentCableLength;   // Current length of the cable
+    private bool isHookAttachedToConcrete = false; // Track if the hook is attached
+
+    //Exercise 2 variables
+    public float moveSpeed = 5f; // Speed at which the hook and concrete move upwards
+    public float minHeight = 10f; // Minimum height for random concrete placement
+    public float maxHeight = 20f; // Maximum height for random concrete placement
+    public Vector3 trolleyNearLimit; // The position of the trolley near the crane
+    public Vector3 trolleyFarLimit;  // The position of the trolley farthest from the crane
+    public Transform craneTransform;    // Reference to the crane's transform
+    public Vector3 nearPointOffset;     // Offset for near limit (as in TrolleyController)
+    public Vector3 farPointOffset;      // Offset for far limit (as in TrolleyController)
+
+
+
+
+
+    void Start()
+    {
+        trolleyNearLimit = craneTransform.TransformPoint(nearPointOffset);
+        trolleyFarLimit = craneTransform.TransformPoint(farPointOffset);
+
+        if (cableSlider != null)
+        {
+            cableSlider.minValue = 0f;
+            cableSlider.maxValue = 1f;
+            cableSlider.onValueChanged.AddListener(OnCableSliderChanged);
+
+            // Initialize cable length based on current positions
+            float initialCableLength = Mathf.Clamp(Vector3.Distance(hook.position, trolley.position), minCableLength, maxCableLength);
+            float normalizedLength = Mathf.InverseLerp(minCableLength, maxCableLength, initialCableLength);
+            cableSlider.value = normalizedLength;
+        }
+    }
+
+    void Update()
+    {
+        // Always update the cable and hook
+        UpdateCableAndHook();
+    }
+
+    private void UpdateCableAndHook()
+    {
+        if (hook != null && trolley != null && cable != null)
+        {
+            // Calculate the cable length based on the slider value
+            currentCableLength = Mathf.Lerp(minCableLength, maxCableLength, cableSlider.value);
+
+            // Calculate the vertical position for the hook based on the cable length
+            float hookYPosition = Mathf.Lerp(hookMaxY, hookMinY, (currentCableLength - minCableLength) / (maxCableLength - minCableLength));
+
+            // Update the hook's position based on the trolley's position
+            if (!isHookAttachedToConcrete)
+            {
+                // Only update the hook's position if not attached to the concrete
+                hook.position = new Vector3(trolley.position.x, hookYPosition, trolley.position.z);
+            }
+            else
+            {
+                // If attached, keep the hook's position but allow the concrete to follow
+                hook.position = new Vector3(trolley.position.x, hookYPosition, trolley.position.z);
+                // Move the concrete to follow the hook, but keep the concrete's X and Z position consistent with the trolley
+                concrete.position = new Vector3(trolley.position.x, hook.position.y, trolley.position.z);
+            }
+
+            // Update the cable's position
+            cable.position = new Vector3(trolley.position.x, trolley.position.y, trolley.position.z);
+            cable.localScale = new Vector3(cable.localScale.x, currentCableLength, cable.localScale.z);
+        }
+    }
+
+    // This method is called by HookCollisionHandler when the hook collides with the concrete
+    public void OnHookCollisionWithConcrete()
+    {
+        if (!isHookAttachedToConcrete)
+        {
+            AttachHookToConcrete();
+        }
+    }
+
+    private void AttachHookToConcrete()
+    {
+        // Snap the hook to the concrete attachment point
+        hook.position = concrete.position;
+        isHookAttachedToConcrete = true;
+
+        // Keep the concrete's position in sync with the hook's current position
+        concrete.position = hook.position;
+    }
+
+    public void OnCableSliderChanged(float value)
+    {
+        // Update the cable length based on the slider value
+        currentCableLength = Mathf.Lerp(minCableLength, maxCableLength, value);
+        UpdateCableAndHook();
+    }
+    public void AdjustCableToConcrete()
+    {
+        // Calculate the distance from trolley to the concrete
+        float distanceToConcrete = Vector3.Distance(trolley.position, concrete.position);
+
+        // Normalize the distance and update the cable length (assuming you already have minCableLength and maxCableLength)
+        float normalizedLength = Mathf.InverseLerp(minCableLength, maxCableLength, distanceToConcrete);
+        cableSlider.value = normalizedLength;
+
+        // Trigger hook attachment once cable is adjusted
+        StartCoroutine(WaitAndAttachHook());
+
+        StartCoroutine(MoveCableToTarget(concrete.position));
+
+    }
+    private IEnumerator MoveCableToTarget(Vector3 targetPosition)
+    {
+        // Get the current position of the hook and the target distance
+        float initialCableLength = currentCableLength;
+        float targetCableLength = Vector3.Distance(trolley.position, targetPosition);
+        targetCableLength = Mathf.Clamp(targetCableLength, minCableLength, maxCableLength);
+
+        // Calculate the time it should take to move the cable smoothly
+        float duration = 1f;  // You can adjust this value to control how fast the cable adjusts
+        float elapsedTime = 0f;
+
+        // Interpolate the cable length smoothly over time
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            // Smoothly interpolate the cable length
+            currentCableLength = Mathf.Lerp(initialCableLength, targetCableLength, t);
+
+            // Update the hook's position based on the interpolated cable length
+            float hookYPosition = Mathf.Lerp(hookMaxY, hookMinY, (currentCableLength - minCableLength) / (maxCableLength - minCableLength));
+            hook.position = new Vector3(trolley.position.x, hookYPosition, trolley.position.z);
+
+            // Update the cable slider to match the new cable length
+            float normalizedLength = Mathf.InverseLerp(minCableLength, maxCableLength, currentCableLength);
+            if (cableSlider != null)
+            {
+                cableSlider.value = normalizedLength;
+            }
+
+            // Wait for the next frame
+            yield return null;
+        }
+
+        // Ensure the cable length is set to the exact target length at the end
+        currentCableLength = targetCableLength;
+
+        // Trigger the hook to attach to the concrete once the cable reaches the target position
+        AttachHookToConcrete();
+
+        // Begin lifting the concrete
+        StartCoroutine(LiftConcrete());
+    }
+
+    private IEnumerator WaitAndAttachHook()
+    {
+        // Wait for a brief moment (1 second)
+        yield return new WaitForSeconds(1f);
+
+        // Attach the hook to the concrete
+        //OnHookCollisionWithConcrete();
+
+        AttachHookToConcrete();
+
+
+        // Begin lifting the concrete
+        StartCoroutine(LiftConcrete());
+    }
+
+    private IEnumerator LiftConcrete()
+    {
+        float targetY = hookMaxY;
+
+        while (hook.position.y < targetY)
+        {
+            hook.position += Vector3.up * (moveSpeed * Time.deltaTime);
+            concrete.position = hook.position;  // Move the concrete up as the hook moves
+            yield return null;
+        }
+
+        // After lifting, proceed to detach and move the concrete
+        StartCoroutine(DetachAndMoveConcrete());
+    }
+    // Detach and move the concrete
+    private IEnumerator DetachAndMoveConcrete()
+    {
+        // Detach the concrete from the hook
+        isHookAttachedToConcrete = false;
+
+        // Wait for a short delay to simulate the detachment
+        yield return new WaitForSeconds(0.5f);
+
+        // Generate random X and Z positions, Y position is between minHeight and maxHeight
+        float randomX = Random.Range(trolleyNearLimit.x, trolleyFarLimit.x);
+        float randomZ = Random.Range(trolleyNearLimit.z, trolleyFarLimit.z);
+        float randomY = Random.Range(minHeight, maxHeight);
+
+        // Set the concrete to the new random position
+        concrete.position = new Vector3(randomX, randomY, randomZ);
+    }
+}
+
+
+/*using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CableController : MonoBehaviour
 {
+    //New code
     public Transform hook;              // Reference to the hook
     public Transform trolley;           // Reference to the trolley
     public Transform concrete;          // Reference to the concrete attachment point
@@ -186,108 +411,11 @@ public class CableController : MonoBehaviour
         currentCableLength = Mathf.Lerp(minCableLength, maxCableLength, value);
         UpdateCableAndHook();
     }
-}
+}*/
 
 
 
 
 
-/*using UnityEngine;
-using UnityEngine.UI;
 
-public class CableController : MonoBehaviour
-{
-    public Transform hook;              // Reference to the hook
-    public Transform trolley;           // Reference to the trolley
-    public Transform concrete;          // Reference to the concrete attachment point
-    public Transform cableModel;        // Reference to the cable model
-    public Transform cable;
-
-    public Slider cableSlider;          // Reference to the UI Slider for cable length
-    public float minCableLength = 0.1f; // Minimum length of the cable
-    public float maxCableLength = 2f;   // Maximum length of the cable
-    public float hookMinY = 12.5f;      // Minimum Y position of the hook
-    public float hookMaxY = 40f;        // Maximum Y position of the hook
-
-    private float currentCableLength;   // Current length of the cable
-    private bool isHookAttachedToConcrete = false; // Track if the hook is attached
-
-    void Start()
-    {
-        if (cableSlider != null)
-        {
-            cableSlider.minValue = 0f;
-            cableSlider.maxValue = 1f;
-            cableSlider.onValueChanged.AddListener(OnCableSliderChanged);
-
-            // Initialize cable length based on current positions
-            float initialCableLength = Mathf.Clamp(Vector3.Distance(hook.position, trolley.position), minCableLength, maxCableLength);
-            float normalizedLength = Mathf.InverseLerp(minCableLength, maxCableLength, initialCableLength);
-            cableSlider.value = normalizedLength;
-        }
-    }
-
-    void Update()
-    {
-        // Always update the cable and hook
-        UpdateCableAndHook();
-    }
-
-    private void UpdateCableAndHook()
-    {
-        if (hook != null && trolley != null && cable != null)
-        {
-            // Calculate the cable length based on the slider value
-            currentCableLength = Mathf.Lerp(minCableLength, maxCableLength, cableSlider.value);
-
-            // Calculate the vertical position for the hook based on the cable length
-            float hookYPosition = Mathf.Lerp(hookMaxY, hookMinY, (currentCableLength - minCableLength) / (maxCableLength - minCableLength));
-
-            // Update the hook's position based on the trolley's position
-            if (!isHookAttachedToConcrete)
-            {
-                // Only update the hook's position if not attached to the concrete
-                hook.position = new Vector3(trolley.position.x, hookYPosition, trolley.position.z);
-            }
-            else
-            {
-                // If attached, keep the hook's position but allow the concrete to follow
-                hook.position = new Vector3(trolley.position.x, hookYPosition, trolley.position.z);
-                // Move the concrete to follow the hook, but keep the concrete's X and Z position consistent with the trolley
-                concrete.position = new Vector3(trolley.position.x, hook.position.y, trolley.position.z);
-            }
-
-            // Update the cable's position
-            cable.position = new Vector3(trolley.position.x, trolley.position.y, trolley.position.z);
-            cable.localScale = new Vector3(cable.localScale.x, currentCableLength, cable.localScale.z);
-        }
-    }
-
-    // This method is called by HookCollisionHandler when the hook collides with the concrete
-    public void OnHookCollisionWithConcrete()
-    {
-        if (!isHookAttachedToConcrete)
-        {
-            AttachHookToConcrete();
-        }
-    }
-
-    private void AttachHookToConcrete()
-    {
-        // Snap the hook to the concrete attachment point
-        hook.position = concrete.position;
-        isHookAttachedToConcrete = true;
-
-        // Keep the concrete's position in sync with the hook's current position
-        concrete.position = hook.position;
-    }
-
-    public void OnCableSliderChanged(float value)
-    {
-        // Update the cable length based on the slider value
-        currentCableLength = Mathf.Lerp(minCableLength, maxCableLength, value);
-        UpdateCableAndHook();
-    }
-}
-*/
 
